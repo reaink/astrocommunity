@@ -104,20 +104,22 @@ return {
     event = "BufRead package.json",
   },
   {
-    "jose-elias-alvarez/typescript.nvim",
-    init = function() astronvim.lsp.skip_setup = utils.list_insert_unique(astronvim.lsp.skip_setup, "tsserver") end,
+    "pmizio/typescript-tools.nvim",
     ft = {
-      "typescript",
-      "typescriptreact",
       "javascript",
       "javascriptreact",
+      "javascript.jsx",
+      "typescript",
+      "typescriptreact",
+      "typescript.tsx",
     },
-    opts = function() return { server = require("astronvim.utils.lsp").config "tsserver" } end,
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function(_, opts)
-      opts.sources = utils.list_insert_unique(opts.sources, require "typescript.extensions.null-ls.code-actions")
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = function()
+      local lsp_utils = require "astronvim.utils.lsp"
+      return {
+        on_attach = lsp_utils.on_attach,
+        capabilities = lsp_utils.capabilities,
+      }
     end,
   },
   {
